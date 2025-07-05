@@ -1,12 +1,13 @@
 package service;
 
 import entities.Customer;
-import entities.products.IsShippable;
 import entities.Product;
+import util.Shipping;
 import validators.BalanceValidator;
 import validators.CartValidator;
 import validators.ProductValidator;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class CheckoutService {
 
         startValidation();
 
+        DecimalFormat df = new DecimalFormat("#.###");
+
         Map<Product, Integer> shippableProducts = new HashMap<>();
 
         for (Map.Entry<Product, Integer> entry : shoppingService.getCart().entrySet()) {
@@ -46,8 +49,8 @@ public class CheckoutService {
             int quantity = entry.getValue();
             product.setQuantity(product.getQuantity() - quantity);
 
-            if (product instanceof IsShippable) {
-                shippableProducts.put((IsShippable) product, quantity);
+            if (product instanceof Shipping) {
+                shippableProducts.put(product, quantity);
             }
         }
 
@@ -59,11 +62,10 @@ public class CheckoutService {
             System.out.println(quantity + "x " + product.getName() + "        " + product.getPrice() * quantity);
         }
         System.out.println("-------------------");
-        System.out.println("Subtotal         " + shoppingService.calculateOrderSubtotal());
-        System.out.println("Shipping         " + shoppingService.calculateShippingFees());
-        System.out.println("Total            " + shoppingService.calculateTotalCost());
+        System.out.println("Subtotal         " + df.format(shoppingService.calculateOrderSubtotal()));
+        System.out.println("Shipping         " + df.format(shoppingService.calculateShippingFees()));
+        System.out.println("Total            " + df.format(shoppingService.calculateTotalCost()));
 
     }
-
 
 }

@@ -19,13 +19,15 @@ public class IsExpirableAndShippable extends Product implements Expiration, Ship
 
     @Override
     public LocalDate getExpiryDate() {
-        return null;
+        return this.expiryDate;
     }
+
 
     @Override
     public double getWeight() {
-        return 0;
+        return this.weight;
     }
+
 
     public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;

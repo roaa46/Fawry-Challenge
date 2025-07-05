@@ -1,8 +1,7 @@
 package service;
 
-import entities.products.IsExpirableAndShippable;
-import entities.products.IsShippable;
 import entities.Product;
+import util.Shipping;
 import validators.CartValidator;
 import validators.ProductValidator;
 
@@ -70,16 +69,15 @@ public class ShoppingService {
         for (Map.Entry<Product, Integer> productEntry : cart.entrySet()) {
 
             Product product = productEntry.getKey();
-            if (product instanceof IsShippable) {
-                totalWeight += ((((IsShippable) product).getWeight() * productEntry.getValue()) / 1000.0);
-            } else if (product instanceof IsExpirableAndShippable) {
-                totalWeight += ((((IsExpirableAndShippable) product).getWeight() * productEntry.getValue()) / 1000.0);
-            }
 
+            if (product instanceof Shipping) {
+                totalWeight += (((Shipping) product).getWeight() * productEntry.getValue()) / 1000.0;
+            }
         }
 
         return totalWeight;
     }
+
 
     public double calculateShippingFees() {
         double shippingFeesPerKg = 25;
